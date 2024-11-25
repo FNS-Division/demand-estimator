@@ -70,13 +70,6 @@
 ###  Project Index
 <details open>
 	<summary><b><code>DEMAND-ESTIMATOR/</code></b></summary>
-	<details> <!-- __root__ Submodule -->
-		<summary><b>__root__</b></summary>
-		<blockquote>
-			<table>
-			</table>
-		</blockquote>
-	</details>
 	<details> <!-- notebooks Submodule -->
 		<summary><b>notebooks</b></summary>
 		<blockquote>
@@ -182,12 +175,6 @@ echo 'INSERT-RUN-COMMAND-HERE'
 Run the test suite using the following command:
 echo 'INSERT-TEST-COMMAND-HERE'
 
----
-##  Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
 
 ---
 
@@ -236,12 +223,6 @@ echo 'INSERT-TEST-COMMAND-HERE'
 
 ##  License
 
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
+This project is protected under the [MIT](LICENSE) License. For more details, refer to the [LICENSE](LICENSE) file.
 
 ---
