@@ -189,6 +189,10 @@ If `are_poi_schools` is set to `True`, then the tool will:
 - Disaggregatate this number across all the schools in the provided dataset, based on how many people live in the catchment area around each school.
 - For example, if 2% of Spain's population lives in a 1km radius around a school, then 2% of Spain's population of compulsory school age is assumed to be a user of this school.
 
+Finally, the notebook produces a chart summarizing the internet demand for each POI.
+
+![POI demand analysis for Ibiza](https://i.ibb.co/BqNQvS3/demand-ibiza.png)
+
 ---
 
 ##  Contributing
