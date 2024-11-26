@@ -38,13 +38,7 @@
 
 ##  Overview
 
-<code>❯ REPLACE-ME</code>
-
----
-
-##  Features
-
-<code>❯ REPLACE-ME</code>
+<code>❯ This tool processes point of interest (POI) data to analyze internet connectivity demand, expressed as throughput in megabits per second. It calculates the potential number of users from population density data, applying configurable parameters such as demand per user in mbps, radius settings and population data source.</code>
 
 ---
 
@@ -76,7 +70,7 @@
 			<table>
 			<tr>
 				<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/notebooks/run_demand.ipynb'>run_demand.ipynb</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td><code>❯ Notebook to demonstrate how to use the tool</code></td>
 			</tr>
 			</table>
 		</blockquote>
@@ -87,11 +81,11 @@
 			<table>
 			<tr>
 				<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/utils.py'>utils.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td><code>❯ Helper functions</code></td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/dataprocess.py'>dataprocess.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td><code>❯ Data processing functions</code></td>
 			</tr>
 			</table>
 			<details>
@@ -100,7 +94,7 @@
 					<table>
 					<tr>
 						<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/handlers/populationdatahandler.py'>populationdatahandler.py</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
+						<td><code>❯ Handler to source population data from WorldPop</code></td>
 					</tr>
 					</table>
 				</blockquote>
@@ -111,11 +105,11 @@
 					<table>
 					<tr>
 						<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/entities/pointofinterest.py'>pointofinterest.py</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
+						<td><code>❯ Classes to create point of interest collections</code></td>
 					</tr>
 					<tr>
 						<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/entities/entity.py'>entity.py</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
+						<td><code>❯ Classes to create generic collections</code></td>
 					</tr>
 					</table>
 				</blockquote>
@@ -126,7 +120,7 @@
 					<table>
 					<tr>
 						<td><b><a href='https://github.com/FNS-Division/demand-estimator/blob/master/demand/demand/demand.py'>demand.py</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
+						<td><code>❯ Main module for population and demand estimation</code></td>
 					</tr>
 					</table>
 				</blockquote>
@@ -161,20 +155,39 @@ Install demand-estimator using one of the following methods:
 ❯ cd demand-estimator
 ```
 
-3. Install the project dependencies:
+3. Install the project dependencies and set up the conda environment:
 
-echo 'INSERT-INSTALL-COMMAND-HERE'
+```sh
+❯ conda env create -f environment.yml
+❯ conda activate demand-env
+```
 
 
 
 ###  Usage
-Run demand-estimator using the following command:
-echo 'INSERT-RUN-COMMAND-HERE'
 
-###  Testing
-Run the test suite using the following command:
-echo 'INSERT-TEST-COMMAND-HERE'
+The tool is meant to be used by launching the provided [notebook](notebooks\run_demand.ipynb), which serves as a template.
 
+The following parameters need to be configured:
+
+| Parameter | Description |
+|-----------|-------------|
+| `country_code` | Three-letter ISO3 country code (e.g., 'ESP' for Spain) used to identify the geographical region for analysis |
+| `poi_dataset_id` | Filename of the Point of Interest dataset containing locations to analyze |
+| `radii` | List of distances (in km) used to create buffer zones around each POI for analysis |
+| `radius_for_demand` | Specific radius (in km) used for calculating demand metrics |
+| `dataset_year` | Year of the population dataset to be used in the analysis |
+| `one_km_res` | Boolean flag indicating whether to use 1km resolution population data (True) or lower resolution (False) |
+| `un_adjusted` | Boolean flag for using UN-adjusted population data (True) or unadjusted data (False) |
+| `overlap_allowed` | Boolean flag determining if POI buffer zones can overlap in the analysis (False = no overlap) |
+| `mbps_demand_per_user` | The bandwidth demand in Mbps assigned to each user in the calculation |
+| `are_poi_schools` | Boolean flag indicating whether the POIs represent schools (affects demand calculations) |
+
+If `are_poi_schools` is set to `True`, then the tool will:
+
+- Fetch the population of compulsory school age in that country and year (Source: [UNESCO](https://data.uis.unesco.org/index.aspx?queryid=3847)).
+- Disaggregatate this number across all the schools in the provided dataset, based on how many people live in the catchment area around each school.
+- For example, if 2% of Spain's population lives in a 1km radius around a school, then 2% of Spain's population of compulsory school age is assumed to be a user of this school.
 
 ---
 
