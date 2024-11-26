@@ -33,10 +33,6 @@ config*
 *.yml
 .env
 
-data/ESP/demo/*
-!data/ESP/output/ESP-merged-results.csv
+data/population/*
+data/ESP/*
 !data/ESP/input/*.csv
-!data/ESP/input/*costs.xlsx
-!data/ESP/input/population/*.tif
-!data/ESP/input/*.gpkg
-!data/ESP/srtm1/*.hgt.zip

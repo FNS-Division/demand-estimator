@@ -3,6 +3,7 @@ import numpy as np
 import itertools
 import io
 import geopandas as gpd
+import folium
 import time
 import random
 import string
@@ -203,3 +204,84 @@ def create_voronoi_diagram(points_df: gpd.GeoDataFrame, identifier_column: str =
     gdf_poi_voronoireg["id"] = points_df[[identifier_column]]
 
     return gdf_poi_voronoireg
+
+
+def create_bubble_map(points, column_name, bubble_color='blue', zoom_level=11):
+    """
+    Create an interactive folium map with bubble markers sized by a specified column.
+    
+    Parameters:
+    -----------
+    points : GeoDataFrame
+        Input GeoDataFrame containing points and data
+    column_name : str
+        Name of the column to be used for bubble sizing
+    bubble_color : str, optional
+        Color of the bubbles (default: 'blue')
+    zoom_level : int, optional
+        Initial zoom level of the map (default: 11)
+    
+    Returns:
+    --------
+    folium.Map
+        Interactive folium map
+    """
+    
+    # Convert GeoDataFrame to EPSG:4326 if it's not already
+    points_wgs84 = points.to_crs(epsg=4326)
+
+    # Calculate center of the map
+    center_lat = points_wgs84.geometry.y.mean()
+    center_lon = points_wgs84.geometry.x.mean()
+
+    # Create the map
+    m = folium.Map(location=[center_lat, center_lon], 
+                   zoom_start=zoom_level, 
+                   tiles="cartodb positron")
+
+    # Normalize sizes for visualization (between 5 and 30)
+    min_val = points_wgs84[column_name].min()
+    max_val = points_wgs84[column_name].max()
+
+    # Add points to the map
+    for idx, row in points_wgs84.iterrows():
+        # Calculate normalized radius (between 5 and 30)
+        radius = 5 + ((row[column_name] - min_val) / (max_val - min_val)) * 25
+        
+        # Create popup text
+        popup_text = f"{column_name}: {row[column_name]}"
+        
+        # Add circle marker
+        folium.CircleMarker(
+            location=[row.geometry.y, row.geometry.x],
+            radius=radius,
+            color=bubble_color,
+            fill=True,
+            fill_color=bubble_color,
+            fill_opacity=0.6,
+            popup=popup_text
+        ).add_to(m)
+
+    # Add a legend with circle representation
+    legend_html = f'''
+    <div style="position: fixed; 
+                bottom: 50px; right: 50px; 
+                border:2px solid grey; z-index:9999; 
+                background-color:white;
+                padding: 10px;
+                border-radius: 5px;">
+         <p><b>{column_name}</b></p>
+         <div style="display: inline-block; 
+                     width: 20px; 
+                     height: 20px; 
+                     background-color: {bubble_color};
+                     border-radius: 50%;
+                     opacity: 0.6;
+                     margin-right: 5px;"></div>
+         <span>Value per point</span><br>
+         <small>Size indicates {column_name.lower()}</small>
+    </div>
+    '''
+    m.get_root().html.add_child(folium.Element(legend_html))
+
+    return m
